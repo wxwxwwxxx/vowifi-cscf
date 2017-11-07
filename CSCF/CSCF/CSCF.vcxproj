@@ -84,15 +84,19 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\54284\Downloads\pjproject-2.7\pjproject-2.7\pjsip\include;C:\Users\54284\Downloads\pjproject-2.7\pjproject-2.7\pjnath\include;C:\Users\54284\Downloads\pjproject-2.7\pjproject-2.7\pjmedia\include;C:\Users\54284\Downloads\pjproject-2.7\pjproject-2.7\pjlib-util\include;C:\Users\54284\Downloads\pjproject-2.7\pjproject-2.7\pjlib\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\54284\Downloads\pjproject-2.7\pjproject-2.7\lib</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>iphlpapi.lib;dsound.lib;dxguid.lib;netapi32.lib;mswsock.lib;ws2_32.lib;odbc32.lib;odbccp32.lib;oleaut32.lib;uuid.lib;ole32.lib;user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -143,16 +147,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="app.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="cscf.h" />
+    <ClInclude Include="define.h" />
+    <ClInclude Include="module_log.h" />
+    <ClInclude Include="module_proxy.h" />
+    <ClInclude Include="module_registrar.h" />
+    <ClInclude Include="pj.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CSCF.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="app.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="module_log.c" />
+    <ClCompile Include="module_proxy.c" />
+    <ClCompile Include="module_registrar.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
