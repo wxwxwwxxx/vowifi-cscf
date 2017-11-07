@@ -7,7 +7,6 @@ struct app_t
 	pjsip_endpoint	*sip_endpt;
 	pj_bool_t		 quit;
 	pj_thread_t		*worker_thread;
-	pj_thread_desc  worker_thread_desc;
 	pj_bool_t		 enable_msg_logging;
 } app;
 

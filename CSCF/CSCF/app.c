@@ -2,38 +2,39 @@
 int worker_proc(void *arg)
 {
 	PJ_UNUSED_ARG(arg);
-
-	while (!app.quit) {
+	while (!app.quit) 
+	{
 		pj_time_val interval = { 0, 20 };
 		pjsip_endpt_handle_events(app.sip_endpt, &interval);
 	}
-
 	return 0;
 }
 pj_status_t init_config()
 {
-	config.sip_af = pj_AF_INET();
-	config.sip_port = 5060;
-	config.sip_tcp = PJ_FALSE;
+	network_config.sip_af = pj_AF_INET();
+	network_config.sip_port = 5060;
+	network_config.sip_tcp = PJ_FALSE;
+	app.enable_msg_logging = PJ_TRUE;
 	return PJ_TRUE;
 }
 pj_status_t init_stack()
 {
+	pj_init();
 	init_config();
 	pj_sockaddr addr;
 	pj_status_t status;
-	pj_log_set_level(3);
+	pj_log_set_level(6);
 	status = pjlib_util_init();
 	CHECK_STATUS();
 	pj_caching_pool_init(&app.cp, NULL, 0);
 	app.pool = pj_pool_create(&app.cp.factory, "CSCF", 512, 512, 0);
 	status = pjsip_endpt_create(&app.cp.factory, NULL, &app.sip_endpt);
 	CHECK_STATUS();
-	pj_log_set_level(4);
-	pj_sockaddr_init((pj_uint16_t)config.sip_af, &addr, NULL, (pj_uint16_t)config.sip_port);
-	if (config.sip_af == pj_AF_INET()) 
+	pj_log_set_level(6);
+	pj_sockaddr_init((pj_uint16_t)network_config.sip_af, &addr, NULL, (pj_uint16_t)network_config.sip_port);
+	if (network_config.sip_af == pj_AF_INET())
 	{
-		if (config.sip_tcp)
+		if (network_config.sip_tcp)
 		{
 			status = pjsip_tcp_transport_start(app.sip_endpt, &addr.ipv4, 1,NULL);
 		}
@@ -42,7 +43,7 @@ pj_status_t init_stack()
 			status = pjsip_udp_transport_start(app.sip_endpt, &addr.ipv4,NULL, 1, NULL);
 		}
 	}
-	else if (config.sip_af == pj_AF_INET6())
+	else if (network_config.sip_af == pj_AF_INET6())
 	{
 		status = pjsip_udp_transport_start6(app.sip_endpt, &addr.ipv6,NULL, 1, NULL);
 	}
@@ -50,14 +51,6 @@ pj_status_t init_stack()
 	{
 		status = PJ_EAFNOTSUP;
 	}
-
-	pj_log_set_level(3);
-	CHECK_STATUS();
-	status = pjsip_tsx_layer_init_module(app.sip_endpt);
-	CHECK_STATUS();
-	status = pjsip_ua_init_module(app.sip_endpt, NULL);
-	CHECK_STATUS();
-	status = pjsip_100rel_init_module(app.sip_endpt);
 	CHECK_STATUS();
 	status =pjsip_endpt_register_module(app.sip_endpt, &module_proxy);
 	CHECK_STATUS();
