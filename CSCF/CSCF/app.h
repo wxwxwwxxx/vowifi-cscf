@@ -15,3 +15,4 @@ struct app_t
 extern int worker_proc(void *arg);
 extern pj_status_t init_stack();
 extern void destroy_stack(void);
+/*APP*/
