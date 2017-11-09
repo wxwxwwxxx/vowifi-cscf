@@ -1,5 +1,6 @@
-#include "module_log.h"
+#include "module.h"
 #include "cscf.h"
+#include "pj.h"
 pj_bool_t logging_on_rx_msg(pjsip_rx_data *rdata)
 {
 	if (!app.enable_msg_logging)
@@ -17,8 +18,6 @@ pj_bool_t logging_on_rx_msg(pjsip_rx_data *rdata)
 		rdata->msg_info.msg_buf));
 	return PJ_FALSE;
 }
-
-/* Notification on outgoing messages */
 pj_status_t logging_on_tx_msg(pjsip_tx_data *tdata)
 {
 	if (!app.enable_msg_logging)
@@ -36,8 +35,6 @@ pj_status_t logging_on_tx_msg(pjsip_tx_data *tdata)
 		tdata->buf.start));
 	return PJ_SUCCESS;
 }
-
-/* The module instance. */
 pjsip_module module_log =
 {
 	NULL, NULL,				/* prev, next.		*/

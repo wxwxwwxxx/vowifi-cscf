@@ -1,5 +1,6 @@
-#include "module_proxy.h"
+#include "module.h"
 #include "cscf.h"
+#include "pj.h"
 pjsip_module module_proxy =
 {
 	NULL, NULL,			    /* prev, next.		*/

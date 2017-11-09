@@ -1,4 +1,5 @@
 #include"cscf.h"
+#include "pj.h"
 int worker_proc(void *arg)
 {
 	PJ_UNUSED_ARG(arg);
@@ -8,14 +9,6 @@ int worker_proc(void *arg)
 		pjsip_endpt_handle_events(app.sip_endpt, &interval);
 	}
 	return 0;
-}
-pj_status_t init_config()
-{
-	network_config.sip_af = pj_AF_INET();
-	network_config.sip_port = 5060;
-	network_config.sip_tcp = PJ_FALSE;
-	app.enable_msg_logging = PJ_TRUE;
-	return PJ_TRUE;
 }
 pj_status_t init_stack()
 {
@@ -52,11 +45,7 @@ pj_status_t init_stack()
 		status = PJ_EAFNOTSUP;
 	}
 	CHECK_STATUS();
-	status =pjsip_endpt_register_module(app.sip_endpt, &module_proxy);
-	CHECK_STATUS();
-	status = pjsip_endpt_register_module(app.sip_endpt, &module_registrar);
-	CHECK_STATUS();
-	status = pjsip_endpt_register_module(app.sip_endpt, &module_log);
+	status=register_module();
 	CHECK_STATUS();
 	pj_thread_create(app.pool, "CSCF", &worker_proc, NULL, 0, 0,&app.worker_thread);
 	CHECK_STATUS();

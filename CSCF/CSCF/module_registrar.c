@@ -1,5 +1,6 @@
-#include"module_registrar.h"
+#include "module.h"
 #include "cscf.h"
+#include "pj.h"
 pjsip_module module_registrar =
 {
 	NULL, NULL,			    /* prev, next.		*/

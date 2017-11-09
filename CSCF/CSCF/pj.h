@@ -16,7 +16,7 @@
 //程序相关头文件
 
 
-
+//win32下的lib处理
 #ifdef PJ_WIN32
 
 #ifdef _DEBUG
