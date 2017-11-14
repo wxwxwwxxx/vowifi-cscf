@@ -18,6 +18,23 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="app.c" />
+    <ClCompile Include="config.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="module.c" />
+    <ClCompile Include="module_log.c" />
+    <ClCompile Include="module_proxy.c" />
+    <ClCompile Include="module_registrar.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="app.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="cscf.h" />
+    <ClInclude Include="define.h" />
+    <ClInclude Include="module.h" />
+    <ClInclude Include="pj.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{5F960A3F-83D0-4BCE-88D4-0914E23A9581}</ProjectGuid>
@@ -146,23 +163,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="app.h" />
-    <ClInclude Include="config.h" />
-    <ClInclude Include="cscf.h" />
-    <ClInclude Include="define.h" />
-    <ClInclude Include="module.h" />
-    <ClInclude Include="pj.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="app.c" />
-    <ClCompile Include="config.c" />
-    <ClCompile Include="main.c" />
-    <ClCompile Include="module.c" />
-    <ClCompile Include="module_log.c" />
-    <ClCompile Include="module_proxy.c" />
-    <ClCompile Include="module_registrar.c" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

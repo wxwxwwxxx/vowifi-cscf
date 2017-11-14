@@ -15,12 +15,29 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pj.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="define.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <ClCompile Include="app.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="config.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="module.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="module_log.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="module_proxy.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="module_registrar.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="app.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -30,31 +47,14 @@
     <ClInclude Include="cscf.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="define.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="module.h">
       <Filter>头文件</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="module_registrar.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="module_proxy.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="module_log.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="app.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="main.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="module.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="config.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
+    <ClInclude Include="pj.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

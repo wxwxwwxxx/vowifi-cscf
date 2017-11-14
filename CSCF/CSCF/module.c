@@ -1,9 +1,11 @@
 #include "cscf.h"
 #include "pj.h"
-//×¢£ºÌí¼ÓÄ£¿éÊ±Çë±à¼­¸Ãº¯Êı£¬Ôö¼ÓÄ£¿éµÄ×¢²á
+//æ³¨ï¼šæ·»åŠ æ¨¡å—æ—¶è¯·ç¼–è¾‘è¯¥å‡½æ•°ï¼Œå¢åŠ æ¨¡å—çš„æ³¨å†Œ
 pj_status_t register_module()
 {
 	pj_status_t status;
+	status = pjsip_tsx_layer_init_module(app.sip_endpt);
+	CHECK_STATUS();
 	status = pjsip_endpt_register_module(app.sip_endpt, &module_proxy);
 	CHECK_STATUS();
 	status = pjsip_endpt_register_module(app.sip_endpt, &module_registrar);

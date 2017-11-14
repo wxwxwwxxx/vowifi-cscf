@@ -1,8 +1,8 @@
 #pragma once
-//°üº¬PJSIPÍ·ÎÄ¼şÓëlibÄ£¿é
+//åŒ…å«PJSIPå¤´æ–‡ä»¶ä¸libæ¨¡å—
 #include "define.h"
 #include <stdio.h>
-#include <tchar.h>
+//#include <tchar.h>
 #include <pjsip.h>
 #include <pjmedia.h>
 #include <pjmedia-codec.h>
@@ -10,13 +10,13 @@
 #include <pjsip_simple.h>
 #include <pjlib-util.h>
 #include <pjlib.h>
-//³£ÓÃºê¶¨Òå¹¤¾ß
+//å¸¸ç”¨å®å®šä¹‰å·¥å…·
 
 #define CHECK_STATUS()	do { if (status != PJ_SUCCESS) return status; } while (0)
-//³ÌĞòÏà¹ØÍ·ÎÄ¼ş
+//ç¨‹åºç›¸å…³å¤´æ–‡ä»¶
 
 
-//win32ÏÂµÄlib´¦Àí
+//win32ä¸‹çš„libå¤„ç†
 #ifdef PJ_WIN32
 
 #ifdef _DEBUG

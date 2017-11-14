@@ -1,5 +1,5 @@
 #pragma once
-//宏定义的设置
+//瀹忓畾涔夌殑璁剧疆
 
-#define PJ_WIN32 = 1
+//#define PJ_WIN32 = 1
 #define THIS_FILE   "VOWIFI_CSCF"

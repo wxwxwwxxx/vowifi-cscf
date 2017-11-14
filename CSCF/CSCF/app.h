@@ -1,6 +1,6 @@
 #pragma once
 #include"pj.h"
-//±£´æ»ù±¾µÄpjsipÄ£¿é£¬°üÀ¨»º´æ³Ø£¬endpoint£¬Ïß³Ì³ØµÈ
+//ä¿å­˜åŸºæœ¬çš„pjsipæ¨¡å—ï¼ŒåŒ…æ‹¬ç¼“å­˜æ± ï¼Œendpointï¼Œçº¿ç¨‹æ± ç­‰
 struct app_t
 {
 	pj_caching_pool	 cp;
@@ -8,7 +8,7 @@ struct app_t
 	pjsip_endpoint	*sip_endpt;
 	pj_bool_t		 quit;
 	pj_thread_t		*worker_thread;
-	//ÊÇ·ñ¿ªÆôlog
+	//æ˜¯å¦å¼€å¯log
 	pj_bool_t		 enable_msg_logging;
 } app;
 

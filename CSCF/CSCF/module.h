@@ -1,19 +1,19 @@
 #pragma once
-/*¸÷¸öÄ£¿é¹«ÓÃ¸ÃÍ·ÎÄ¼ş
-*Ìí¼ÓĞÂÄ£¿éÊ±Çë°´ÒÔÏÂ²½Öè£º
-*1¡¢½¨Á¢Ä£¿éµÄcÎÄ¼ş
-*2¡¢ÔÚ¸ÃÍ·ÎÄ¼şÖĞÉùÃ÷Ä£¿é¼°Ä£¿éµÄº¯Êı
-*3¡¢ÔÚregister_moduleº¯ÊıÖĞÌí¼ÓÄ£¿éµÄ×¢²á
+/*å„ä¸ªæ¨¡å—å…¬ç”¨è¯¥å¤´æ–‡ä»¶
+*æ·»åŠ æ–°æ¨¡å—æ—¶è¯·æŒ‰ä»¥ä¸‹æ­¥éª¤ï¼š
+*1ã€å»ºç«‹æ¨¡å—çš„cæ–‡ä»¶
+*2ã€åœ¨è¯¥å¤´æ–‡ä»¶ä¸­å£°æ˜æ¨¡å—åŠæ¨¡å—çš„å‡½æ•°
+*3ã€åœ¨register_moduleå‡½æ•°ä¸­æ·»åŠ æ¨¡å—çš„æ³¨å†Œ
 */
 #include "pj.h"
-//×¢²áÄ£¿é
+//æ³¨å†Œæ¨¡å—
 extern pjsip_module module_registrar;
-//logÄ£¿é
+//logæ¨¡å—
 extern pj_bool_t logging_on_rx_msg(pjsip_rx_data *rdata);
 extern pj_status_t logging_on_tx_msg(pjsip_tx_data *tdata);
 extern pjsip_module module_log;
-//proxyÄ£¿é
+//proxyæ¨¡å—
 extern pjsip_module module_proxy;
 
-//Ä£¿é×¢²áº¯Êı
+//æ¨¡å—æ³¨å†Œå‡½æ•°
 extern pj_status_t register_module();
