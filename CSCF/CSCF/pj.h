@@ -2,7 +2,6 @@
 //包含PJSIP头文件与lib模块
 #include "define.h"
 #include <stdio.h>
-//#include <tchar.h>
 #include <pjsip.h>
 #include <pjmedia.h>
 #include <pjmedia-codec.h>
