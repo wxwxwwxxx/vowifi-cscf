@@ -1,5 +1,6 @@
 #include"cscf.h"
 #include "pj.h"
+//utf8
 int worker_proc(void *arg)
 {
 	PJ_UNUSED_ARG(arg);

@@ -1,6 +1,7 @@
 #include "module.h"
 #include "cscf.h"
 #include "pj.h"
+//utf8
 pj_bool_t logging_on_rx_msg(pjsip_rx_data *rdata)
 {
 	if (!app.enable_msg_logging)

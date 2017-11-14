@@ -1,6 +1,7 @@
 #include "module.h"
 #include "cscf.h"
 #include "pj.h"
+//utf8
 pjsip_module module_proxy =
 {
 	NULL, NULL,			    /* prev, next.		*/
