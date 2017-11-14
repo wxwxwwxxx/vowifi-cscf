@@ -20,46 +20,17 @@
 
 #ifdef _DEBUG
 
-#pragma comment(lib,"pjlib-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"pjlib-util-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"pjmedia-audiodev-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"pjmedia-codec-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"pjmedia-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"pjnath-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"pjsip-core-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"pjsip-simple-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"pjsip-ua-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"pjsua-lib-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"libresample-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"libspeex-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"libsrtp-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"libg7221codec-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"libgsmcodec-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"libilbccodec-i386-win32-vc14-debug.lib")
-#pragma comment(lib,"pjsua2-lib-i386-Win32-vc14-Debug.lib")
-
-#endif
-
-#ifdef NDEBUG
-
-#pragma comment(lib,"pjlib-i386-win32-vc14-release.lib")
-#pragma comment(lib,"pjlib-util-i386-win32-vc14-release.lib")
-#pragma comment(lib,"pjmedia-audiodev-i386-win32-vc14-release.lib")
-#pragma comment(lib,"pjmedia-codec-i386-win32-vc14-release.lib")
-#pragma comment(lib,"pjmedia-i386-win32-vc14-release.lib")
-#pragma comment(lib,"pjnath-i386-win32-vc14-release.lib")
-#pragma comment(lib,"pjsip-core-i386-win32-vc14-release.lib")
-#pragma comment(lib,"pjsip-simple-i386-win32-vc14-release.lib")
-#pragma comment(lib,"pjsip-ua-i386-win32-vc14-release.lib")
-#pragma comment(lib,"pjsua-lib-i386-win32-vc14-release.lib")
-#pragma comment(lib,"libresample-i386-win32-vc14-release.lib")
-#pragma comment(lib,"libspeex-i386-win32-vc14-release.lib")
-#pragma comment(lib,"libsrtp-i386-win32-vc14-release.lib")
-#pragma comment(lib,"libg7221codec-i386-win32-vc14-release.lib")
-#pragma comment(lib,"libgsmcodec-i386-win32-vc14-release.lib")
-#pragma comment(lib,"libilbccodec-i386-win32-vc14-release.lib")
-#pragma comment(lib,"libmilenage-i386-win32-vc14-release.lib")
-#pragma comment(lib,"libportaudio-i386-win32-vc14-release.lib")
-
+#pragma comment(lib,"pjlib-x86_64-x64-vc14-debug.lib")
+#pragma comment(lib,"pjlib-util-x86_64-x64-vc14-debug.lib")
+#pragma comment(lib,"pjmedia-audiodev-x86_64-x64-vc14-debug.lib")
+#pragma comment(lib,"pjmedia-codec-x86_64-x64-vc14-debug.lib")
+#pragma comment(lib,"pjmedia-x86_64-x64-vc14-debug.lib")
+#pragma comment(lib,"pjnath-x86_64-x64-vc14-debug.lib")
+#pragma comment(lib,"pjsip-core-x86_64-x64-vc14-debug.lib")
+#pragma comment(lib,"pjsip-simple-x86_64-x64-vc14-debug.lib")
+#pragma comment(lib,"pjsip-ua-x86_64-x64-vc14-debug.lib")
+#pragma comment(lib,"pjsua-lib-x86_64-x64-vc14-debug.lib")
+#pragma comment(lib,"pjsua2-lib-x86_64-x64-vc14-Debug.lib")
+#pragma comment(lib,"pjmedia-videodev-x86_64-x64-vc14-Debug.lib")
 #endif
 #endif
