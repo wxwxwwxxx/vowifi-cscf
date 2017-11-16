@@ -1,13 +1,7 @@
 #include "module.h"
 #include "cscf.h"
 #include "pj.h"
-void pj_print(pj_str_t a)
-{
-	int i = 0;
-	while (i != a.slen)
-		printf("%c", a.ptr[i++]);
-	printf("\n");
-}
+
 pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 {
 	pjsip_msg *msg = rdata->msg_info.msg;
@@ -57,12 +51,8 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 					if (PJSIP_URI_SCHEME_IS_SIP(hdst->uri) ||
 						PJSIP_URI_SCHEME_IS_SIPS(hdst->uri))
 					{
-					pjsip_sip_uri *sip_uri = (pjsip_sip_uri*)
+						pjsip_sip_uri *sip_uri = (pjsip_sip_uri*)
 							pjsip_uri_get_uri(hdst->uri);
-						pj_print(sip_uri->host);
-						pj_print(sip_uri->user);
-						pj_print(sip_uri->passwd);
-						pj_print(sip_uri->user_param);
 						sip_uri->host = pj_str("x-modified-host");
 						sip_uri->port = 1;
 
