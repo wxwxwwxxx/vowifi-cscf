@@ -8,8 +8,8 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 	pjsip_hdr hdr_list;
 	int code;
 	pj_status_t status;
-
-	if (msg->line.req.method.id != PJSIP_REGISTER_METHOD)
+	/*wql:add subscribe dispose*/
+	if (msg->line.req.method.id != PJSIP_REGISTER_METHOD /*|| msg->line.req.method.id !=PJSIP_OTHER_METHOD*/)
 		return PJ_FALSE;
 
 	if (!registrar_config.respond)
