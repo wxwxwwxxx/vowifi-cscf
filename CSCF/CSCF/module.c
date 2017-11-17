@@ -8,6 +8,8 @@ pj_status_t register_module()
 	CHECK_STATUS();
 	status = pjsip_endpt_register_module(app.sip_endpt, &module_proxy);
 	CHECK_STATUS();
+	status = pjsip_endpt_register_module(app.sip_endpt, &mod_tu);
+	CHECK_STATUS();
 	status = pjsip_endpt_register_module(app.sip_endpt, &module_registrar);
 	CHECK_STATUS();
 	status = pjsip_endpt_register_module(app.sip_endpt, &module_log);

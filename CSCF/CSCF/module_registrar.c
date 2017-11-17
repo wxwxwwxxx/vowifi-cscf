@@ -88,14 +88,14 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 
 	status = pjsip_endpt_respond(app.sip_endpt, NULL, rdata, code, NULL,
 		&hdr_list, NULL, NULL);
-	return PJ_SUCCESS;
+	return PJ_TRUE;
 }
 pjsip_module module_registrar =
 {
 	NULL, NULL,			    /* prev, next.		*/
 	{ "module_registrar", 16 },	    /* Name.			*/
 	-1,				    /* Id			*/
-	PJSIP_MOD_PRIORITY_APPLICATION, /* Priority			*/
+	PJSIP_MOD_PRIORITY_UA_PROXY_LAYER-1, /* Priority			*/
 	NULL,			    /* load()			*/
 	NULL,			    /* start()			*/
 	NULL,			    /* stop()			*/
