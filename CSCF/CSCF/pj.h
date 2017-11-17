@@ -9,6 +9,7 @@
 #include <pjsip_simple.h>
 #include <pjlib-util.h>
 #include <pjlib.h>
+
 //常用宏定义工具
 
 #define CHECK_STATUS()	do { if (status != PJ_SUCCESS) return status; } while (0)

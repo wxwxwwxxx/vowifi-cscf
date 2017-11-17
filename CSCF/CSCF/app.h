@@ -10,9 +10,14 @@ struct app_t
 	pj_thread_t		*worker_thread;
 	//是否开启log
 	pj_bool_t		 enable_msg_logging;
+	unsigned		 name_cnt;
+	pjsip_host_port	 name[16];
+	int				port;
+	pj_bool_t record_route;
 } app;
 
 extern int worker_proc(void *arg);
 extern pj_status_t init_stack();
 extern void destroy_stack(void);
+extern pj_status_t init_proxy(void);
 /*APP*/
