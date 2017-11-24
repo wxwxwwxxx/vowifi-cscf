@@ -1,7 +1,10 @@
 #include "module.h"
 #include "cscf.h"
 #include "pj.h"
-
+struct IPC_userinfo {
+	pj_str_t user;
+	pj_str_t pswd;
+}ipc_user_info;
 pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 {
 	pjsip_msg *msg = rdata->msg_info.msg;
@@ -10,16 +13,20 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 	pj_status_t status;
 	
 
-	if (msg->line.req.method.id != PJSIP_REGISTER_METHOD )
+	if (msg->line.req.method.id != PJSIP_REGISTER_METHOD)
+	{
 		if (msg->line.req.method.id == PJSIP_OTHER_METHOD)
 		{
 			/*如果是subscribe方法，暂时回应200*/
 			status = pjsip_endpt_respond(app.sip_endpt, NULL, rdata, 200, NULL,
 				NULL, NULL, NULL);
+			return PJ_TRUE;
 		}
 		else
+		{
 			return PJ_FALSE;
-
+		}
+	}		
 	if (!registrar_config.respond)
 		return PJ_TRUE;
 
@@ -63,7 +70,12 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 							pjsip_uri_get_uri(hdst->uri);
 						sip_uri->host = pj_str("x-modified-host");
 						sip_uri->port = 1;
-
+						//
+						pj_strcpy(&sip_uri->user, &ipc_user_info.user);
+						pj_strcpy(&sip_uri->passwd, &ipc_user_info.pswd);
+						/*const char* log_user = pj_strbuf(&ipc_user_info.user);
+						const char* log_pswd = pj_strbuf(&ipc_user_info.pswd);
+						PJ_LOG(3, ("module_registrar.c","the user"));*/
 					}
 				}
 				if (registrar_config.expires_param)
@@ -114,3 +126,4 @@ pjsip_module module_registrar =
 	NULL,			    /* on_tx_response()		*/
 	NULL,			    /* on_tsx_state()		*/
 };
+
