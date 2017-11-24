@@ -8,9 +8,17 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 	pjsip_hdr hdr_list;
 	int code;
 	pj_status_t status;
-	/*wql:add subscribe dispose*/
-	if (msg->line.req.method.id != PJSIP_REGISTER_METHOD /*|| msg->line.req.method.id !=PJSIP_OTHER_METHOD*/)
-		return PJ_FALSE;
+	
+
+	if (msg->line.req.method.id != PJSIP_REGISTER_METHOD )
+		if (msg->line.req.method.id == PJSIP_OTHER_METHOD)
+		{
+			/*如果是subscribe方法，暂时回应200*/
+			status = pjsip_endpt_respond(app.sip_endpt, NULL, rdata, 200, NULL,
+				NULL, NULL, NULL);
+		}
+		else
+			return PJ_FALSE;
 
 	if (!registrar_config.respond)
 		return PJ_TRUE;
@@ -22,7 +30,7 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 	{
 		pjsip_generic_string_hdr *hwww;
 		const pj_str_t hname = pj_str("WWW-Authenticate");
-		const pj_str_t hvalue = pj_str("Digest realm=\"test\"");
+		const pj_str_t hvalue = pj_str("Digest realm=\"192.168.1.101\",nonce=\"d54e4bb9-fc22-4e08-8b69-442e1b8774eb\",algorithm=MD5, qop=\"auth\"");
 
 		hwww = pjsip_generic_string_hdr_create(rdata->tp_info.pool, &hname,
 			&hvalue);
