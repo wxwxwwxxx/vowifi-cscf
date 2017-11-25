@@ -1,9 +1,14 @@
 #include "module.h"
 #include "cscf.h"
 #include "pj.h"
+
+/*与HSS通信所需数据结构*/
 struct IPC_userinfo {
 	pj_str_t user;
 	pj_str_t pswd;
+	pj_str_t host;
+	int port;
+	pj_time_val expires;
 }ipc_user_info;
 pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 {
@@ -70,12 +75,6 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 							pjsip_uri_get_uri(hdst->uri);
 						sip_uri->host = pj_str("x-modified-host");
 						sip_uri->port = 1;
-						//
-						pj_strcpy(&sip_uri->user, &ipc_user_info.user);
-						pj_strcpy(&sip_uri->passwd, &ipc_user_info.pswd);
-						/*const char* log_user = pj_strbuf(&ipc_user_info.user);
-						const char* log_pswd = pj_strbuf(&ipc_user_info.pswd);
-						PJ_LOG(3, ("module_registrar.c","the user"));*/
 					}
 				}
 				if (registrar_config.expires_param)

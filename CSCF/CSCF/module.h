@@ -8,6 +8,7 @@
 #include "pj.h"
 //注册模块
 extern pjsip_module module_registrar;
+extern struct IPC_userinfo ipc_user_info;
 //log模块
 extern pj_bool_t logging_on_rx_msg(pjsip_rx_data *rdata);
 extern pj_status_t logging_on_tx_msg(pjsip_tx_data *tdata);
