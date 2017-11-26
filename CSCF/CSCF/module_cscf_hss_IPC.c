@@ -51,28 +51,3 @@ pjsip_module module_route =
 	NULL,				/* on_tsx_state()	*/
 
 };
-	/*
-	char *a = "cmn";
-	char *b = "heio";
-	pj_status_t status;
-	pj_str_t str = pj_str("nihao");
-	str.slen = 4;
-	pj_str_t str2 = pj_str("cnma");
-	status = pj_init();
-	pj_caching_pool_init(&app.cp, NULL, 0);
-	app.pool = pj_pool_create(&app.cp.factory, "sipecho", 512, 512, 0);
-	pj_hash_table_t * ht = pj_hash_create(app.pool, 20);
-	pj_hash_set(app.pool, ht, a, PJ_HASH_KEY_STRING, 0, &str);
-	pj_hash_set(app.pool, ht, b, PJ_HASH_KEY_STRING, 0, &str2);
-	char c[16];// = "cmnddddd";
-	c[0] = 'c';
-	c[1] = 'm';
-	c[2] = 'n';
-	c[3] = '\0';
-	c[4] = 'n';
-	c[5] = 'n';
-	PJ_LOG(3, (THIS_FILE, pj_strbuf((pj_str_t*)pj_hash_get(ht, c, PJ_HASH_KEY_STRING, 0))));
-	PJ_LOG(3, (THIS_FILE, pj_strbuf((pj_str_t*)pj_hash_get(ht, "heio", PJ_HASH_KEY_STRING, 0))));
-	void *asd=pj_hash_get(ht, "hsl", PJ_HASH_KEY_STRING, 0);
-	return 0;
-	*/
