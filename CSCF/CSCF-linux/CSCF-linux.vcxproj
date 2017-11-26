@@ -73,6 +73,7 @@
     <ClCompile Include="..\CSCF\config.c" />
     <ClCompile Include="..\CSCF\main.c" />
     <ClCompile Include="..\CSCF\module.c" />
+    <ClCompile Include="..\CSCF\module_cscf_hss_IPC.c" />
     <ClCompile Include="..\CSCF\module_log.c" />
     <ClCompile Include="..\CSCF\module_proxy.c" />
     <ClCompile Include="..\CSCF\module_registrar.c" />
