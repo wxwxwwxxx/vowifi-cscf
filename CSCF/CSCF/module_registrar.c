@@ -3,13 +3,7 @@
 #include "pj.h"
 
 /*与HSS通信所需数据结构*/
-struct IPC_userinfo {
-	pj_str_t user;
-	pj_str_t pswd;
-	pj_str_t host;
-	int port;
-	pj_time_val expires;
-}ipc_user_info;
+
 pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 {
 	pjsip_msg *msg = rdata->msg_info.msg;
@@ -66,7 +60,14 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 					pjsip_hdr_clone(rdata->tp_info.pool, hsrc);
 				if (hdst->expires == 0)
 					continue;
-
+				//save it to routing_chart
+				pjsip_sip_uri *contact = (pjsip_sip_uri*)pjsip_uri_get_uri(hdst->uri);
+				struct IPC_userinfo *userinfo = pj_pool_alloc(app.pool, sizeof(struct IPC_userinfo));
+				pj_strdup(app.pool, &userinfo->user, &contact->user);
+				pj_strdup(app.pool, &userinfo->host, &contact->host);
+				userinfo->port = contact->port;
+				set_chart(userinfo);
+				////////////////
 				if (registrar_config.contact_op == MODIFIED) {
 					if (PJSIP_URI_SCHEME_IS_SIP(hdst->uri) ||
 						PJSIP_URI_SCHEME_IS_SIPS(hdst->uri))
@@ -114,7 +115,7 @@ pjsip_module module_registrar =
 	NULL, NULL,			    /* prev, next.		*/
 	{ "module_registrar", 16 },	    /* Name.			*/
 	-1,				    /* Id			*/
-	PJSIP_MOD_PRIORITY_UA_PROXY_LAYER-1, /* Priority			*/
+	PJSIP_MOD_PRIORITY_UA_PROXY_LAYER-2, /* Priority			*/
 	NULL,			    /* load()			*/
 	NULL,			    /* start()			*/
 	NULL,			    /* stop()			*/

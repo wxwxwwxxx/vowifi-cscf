@@ -14,6 +14,7 @@ struct app_t
 	pjsip_host_port	 name[16];
 	int				port;
 	pj_bool_t record_route;
+	pj_hash_table_t * routing_chart;
 } app;
 
 extern int worker_proc(void *arg);

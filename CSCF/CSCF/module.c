@@ -14,5 +14,7 @@ pj_status_t register_module()
 	CHECK_STATUS();
 	status = pjsip_endpt_register_module(app.sip_endpt, &module_log);
 	CHECK_STATUS();
+	status = pjsip_endpt_register_module(app.sip_endpt, &module_route);
+	CHECK_STATUS();
 	return PJ_SUCCESS;
 }

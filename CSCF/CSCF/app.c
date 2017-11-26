@@ -52,6 +52,7 @@ pj_status_t init_stack()
 	CHECK_STATUS();
 	pj_thread_create(app.pool, "CSCF", &worker_proc, NULL, 0, 0,&app.worker_thread);
 	CHECK_STATUS();
+	app.routing_chart = pj_hash_create(app.pool, 20);
 	return PJ_SUCCESS;
 }
 void destroy_stack(void)
