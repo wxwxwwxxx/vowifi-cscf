@@ -6,9 +6,8 @@ int main(int argc, char *argv[])
 	init_stack();
 	while (1)
 	{
-		scanf(a);
-		if (strcmp(a, "exit"))
-			break;
+		scanf("%s",a);
+		if (strcmp(a, "exit")==0)break;
 	}
 	destroy_stack();
 	return 0;
