@@ -2,10 +2,21 @@
 #include "cscf.h"
 #include "pj.h"
 //utf8
+char* pj_strdup4(pj_pool_t* pool,const pj_str_t * pjstr)
+{
+	char* key = (char*)pj_pool_alloc(pool, sizeof(char)*pj_strlen(pjstr) + 1);
+	const char* buf = pj_strbuf(pjstr);
+	pj_size_t len = pj_strlen(pjstr);
+	for (unsigned int i = 0; i < len; i++)
+	{
+		key[i] = buf[i];
+	}
+	key[len] = '\0';
+	return key;
+}
 pj_status_t set_chart(struct IPC_userinfo *ui)
 {
-	char* key = pj_strbuf(&ui->user);
-	key[pj_strlen(&ui->user)] = '\0';
+	char* key = pj_strdup4(app.pool, &ui->user);
 	pj_hash_set(app.pool, app.routing_chart, key, PJ_HASH_KEY_STRING, 0, ui);
 	return PJ_SUCCESS;
 }
@@ -24,12 +35,10 @@ pj_bool_t route_on_rx_msg(pjsip_rx_data *rdata)
 	else
 	{
 		return PJ_FALSE;
-
 	}
 	pj_status_t status;
 	pjsip_sip_uri * req_uri=pjsip_uri_get_uri(rdata->msg_info.msg->line.req.uri);
-	char* key=pj_strbuf(&req_uri->user);
-	key[pj_strlen(&req_uri->user)] = '\0';
+	char* key=pj_strdup4(app.pool, &req_uri->user);
 	struct IPC_userinfo* userinfo = get_chart(key);
 	if (userinfo == NULL)
 	{

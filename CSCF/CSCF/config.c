@@ -13,6 +13,6 @@ pj_status_t init_config()
 	registrar_config.expires = 300;
 	registrar_config.expires_param = 300;
 	registrar_config.contact_op = MODIFIED;
-	app.record_route=PJ_FALSE;
+	app.record_route=PJ_TRUE;
 	return PJ_SUCCESS;
 }

@@ -60,6 +60,7 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 				pj_strdup(app.pool, &userinfo->user, &contact->user);
 				pj_strdup2(app.pool, &userinfo->host, rdata->pkt_info.src_name);
 				userinfo->port = rdata->pkt_info.src_port;
+
 				set_chart(userinfo);
 				////////////////
 				if (registrar_config.contact_op == MODIFIED) {

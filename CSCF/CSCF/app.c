@@ -90,6 +90,11 @@ pj_status_t init_proxy(void)
 	/* The first address is important since this would be the one
 	* to be added in Record-Route.
 	*/
+#ifdef PJ_SERVER_TEST
+	app.name[app.name_cnt].host = pj_str(PJ_SERVER_ADDRESS);
+	app.name[app.name_cnt].port = app.port;
+	app.name_cnt++;
+#endif	
 	if (pj_gethostip(pj_AF_INET(), &pri_addr) == PJ_SUCCESS) {
 		char addr[PJ_INET_ADDRSTRLEN];
 		pj_inet_ntop(pj_AF_INET(), &pri_addr.ipv4.sin_addr, addr,
@@ -123,11 +128,7 @@ pj_status_t init_proxy(void)
 	app.name[app.name_cnt].port = app.port;
 	app.name_cnt++;
 #endif
-#ifdef PJ_SERVER_TEST
-	app.name[app.name_cnt].host = pj_str(PJ_SERVER_ADDRESS);
-	app.name[app.name_cnt].port = app.port;
-	app.name_cnt++;
-#endif	
+
 	app.name[app.name_cnt].host = *pj_gethostname();
 	app.name[app.name_cnt].port = app.port;
 	app.name_cnt++;
