@@ -123,7 +123,11 @@ pj_status_t init_proxy(void)
 	app.name[app.name_cnt].port = app.port;
 	app.name_cnt++;
 #endif
-
+#ifdef PJ_SERVER_TEST
+	app.name[app.name_cnt].host = pj_str(PJ_SERVER_ADDRESS);
+	app.name[app.name_cnt].port = app.port;
+	app.name_cnt++;
+#endif	
 	app.name[app.name_cnt].host = *pj_gethostname();
 	app.name[app.name_cnt].port = app.port;
 	app.name_cnt++;

@@ -11,21 +11,15 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 	int code;
 	pj_status_t status;
 	
-
-	if (msg->line.req.method.id != PJSIP_REGISTER_METHOD)
+	if (pj_strcmp2(&msg->line.req.method.name,"SUBSCRIBE")==0)
 	{
-		if (msg->line.req.method.id == PJSIP_OTHER_METHOD)
-		{
-			/*如果是subscribe方法，暂时回应200*/
-			status = pjsip_endpt_respond(app.sip_endpt, NULL, rdata, 200, NULL,
-				NULL, NULL, NULL);
-			return PJ_TRUE;
-		}
-		else
-		{
-			return PJ_FALSE;
-		}
-	}		
+		/*如果是subscribe方法，暂时回应200*/
+		status = pjsip_endpt_respond(app.sip_endpt, NULL, rdata, 200, NULL,
+			NULL, NULL, NULL);
+		return PJ_TRUE;
+	}
+	if (msg->line.req.method.id != PJSIP_REGISTER_METHOD)
+		return PJ_FALSE;	
 	if (!registrar_config.respond)
 		return PJ_TRUE;
 
@@ -64,8 +58,8 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 				pjsip_sip_uri *contact = (pjsip_sip_uri*)pjsip_uri_get_uri(hdst->uri);
 				struct IPC_userinfo *userinfo = pj_pool_alloc(app.pool, sizeof(struct IPC_userinfo));
 				pj_strdup(app.pool, &userinfo->user, &contact->user);
-				pj_strdup(app.pool, &userinfo->host, &contact->host);
-				userinfo->port = contact->port;
+				pj_strdup2(app.pool, &userinfo->host, rdata->pkt_info.src_name);
+				userinfo->port = rdata->pkt_info.src_port;
 				set_chart(userinfo);
 				////////////////
 				if (registrar_config.contact_op == MODIFIED) {

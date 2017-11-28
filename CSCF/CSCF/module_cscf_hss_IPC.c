@@ -16,6 +16,16 @@ struct IPC_userinfo * get_chart(const char* key)
 }
 pj_bool_t route_on_rx_msg(pjsip_rx_data *rdata)
 {
+	pjsip_method_e methodid= rdata->msg_info.msg->line.req.method.id;
+	if (methodid == PJSIP_INVITE_METHOD || methodid == PJSIP_ACK_METHOD || methodid == PJSIP_BYE_METHOD || methodid == PJSIP_CANCEL_METHOD||pj_strcmp2(&rdata->msg_info.msg->line.req.method.name,"MESSAGE")==0)
+	{
+
+	}
+	else
+	{
+		return PJ_FALSE;
+
+	}
 	pj_status_t status;
 	pjsip_sip_uri * req_uri=pjsip_uri_get_uri(rdata->msg_info.msg->line.req.uri);
 	char* key=pj_strbuf(&req_uri->user);
