@@ -40,64 +40,34 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 
 	}
 	else {
-		if (registrar_config.contact_op == EXACT ||registrar_config.contact_op == MODIFIED)
-		{
-			pjsip_hdr *hsrc;
+		pjsip_hdr *hsrc;
+		for (hsrc = msg->hdr.next; hsrc != &msg->hdr; hsrc = hsrc->next) {
+			pjsip_contact_hdr *hdst;
+			if (hsrc->type != PJSIP_H_CONTACT)
+				continue;
 
-			for (hsrc = msg->hdr.next; hsrc != &msg->hdr; hsrc = hsrc->next) {
-				pjsip_contact_hdr *hdst;
-
-				if (hsrc->type != PJSIP_H_CONTACT)
-					continue;
-
-				hdst = (pjsip_contact_hdr*)
-					pjsip_hdr_clone(rdata->tp_info.pool, hsrc);
-				if (hdst->expires == 0)
-					continue;
-				//save it to routing_chart
-				pjsip_sip_uri *contact = (pjsip_sip_uri*)pjsip_uri_get_uri(hdst->uri);
-				struct IPC_userinfo *userinfo = pj_pool_alloc(app.pool, sizeof(struct IPC_userinfo));
-				pj_strdup(app.pool, &userinfo->user, &contact->user);
-				pj_strdup2(app.pool, &userinfo->host, rdata->pkt_info.src_name);
-				userinfo->port = rdata->pkt_info.src_port;
-
-				set_chart(userinfo);
-				////////////////
-				if (registrar_config.contact_op == MODIFIED) {
-					if (PJSIP_URI_SCHEME_IS_SIP(hdst->uri) ||
-						PJSIP_URI_SCHEME_IS_SIPS(hdst->uri))
-					{
-						pjsip_sip_uri *sip_uri = (pjsip_sip_uri*)
-							pjsip_uri_get_uri(hdst->uri);
-						sip_uri->host = pj_str("x-modified-host");
-						sip_uri->port = 1;
-					}
-				}
-				if (registrar_config.expires_param)
-					hdst->expires = registrar_config.expires_param;
-
-				pj_list_push_back(&hdr_list, hdst);
+			hdst = (pjsip_contact_hdr*)pjsip_hdr_clone(rdata->tp_info.pool, hsrc);
+			if (hdst->expires == 0)
+				continue;
+			//save it to routing_chart
+			pjsip_sip_uri *contact = (pjsip_sip_uri*)pjsip_uri_get_uri(hdst->uri);
+			struct IPC_userinfo *userinfo = pj_pool_alloc(app.pool, sizeof(struct IPC_userinfo));
+			pj_strdup(app.pool, &userinfo->user, &contact->user);
+			pj_strdup2(app.pool, &userinfo->host, rdata->pkt_info.src_name);
+			userinfo->port = rdata->pkt_info.src_port;
+			pjsip_hdr *h = pjsip_msg_find_hdr(rdata->msg_info.msg, PJSIP_H_EXPIRES, NULL);
+			userinfo->expires = ((pjsip_expires_hdr*)h)->ivalue;
+			if (userinfo->expires == 0)
+			{
+				userinfo->valid = 0;
 			}
+			else
+			{
+				userinfo->valid = 1;
+			}
+			PJ_LOG(3, (THIS_FILE, " REGISTER SUCCESS£º%s  %d", pj_strdup4(app.pool, &userinfo->user), userinfo->expires));
+			set_chart(userinfo);
 		}
-
-		if (registrar_config.more_contacts.slen) {
-			pjsip_generic_string_hdr *hcontact;
-			const pj_str_t hname = pj_str("Contact");
-
-			hcontact = pjsip_generic_string_hdr_create(rdata->tp_info.pool, &hname,
-				&registrar_config.more_contacts);
-			pj_list_push_back(&hdr_list, hcontact);
-		}
-
-		if (registrar_config.expires) {
-			pjsip_expires_hdr *hexp;
-
-			hexp = pjsip_expires_hdr_create(rdata->tp_info.pool,
-				registrar_config.expires);
-			pj_list_push_back(&hdr_list, hexp);
-		}
-
-
 		code = registrar_config.status_code;
 	}
 

@@ -8,6 +8,7 @@ struct app_t
 	pjsip_endpoint	*sip_endpt;
 	pj_bool_t		 quit;
 	pj_thread_t		*worker_thread;
+	pj_thread_t		*clean_thread;
 	//是否开启log
 	pj_bool_t		 enable_msg_logging;
 	unsigned		 name_cnt;
@@ -15,6 +16,7 @@ struct app_t
 	int				port;
 	pj_bool_t record_route;
 	pj_hash_table_t * routing_chart;
+	pj_lock_t* routing_lock;
 } app;
 
 extern int worker_proc(void *arg);

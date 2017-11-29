@@ -6,7 +6,7 @@ pj_status_t init_config()
 	network_config.sip_port = PJ_SERVER_PORT;
 	app.port = network_config.sip_port;
 	network_config.sip_tcp = PJ_FALSE;
-	app.enable_msg_logging = PJ_TRUE;
+	app.enable_msg_logging = PJ_FALSE;
 	registrar_config.authenticate=PJ_TRUE;
 	registrar_config.respond = PJ_TRUE;
 	registrar_config.status_code = 200;

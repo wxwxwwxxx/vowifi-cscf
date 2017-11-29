@@ -37,10 +37,10 @@ extern pjsip_module mod_tu;
 //模块注册函数
 struct IPC_userinfo {
 	pj_str_t user;
-	pj_str_t pswd;
 	pj_str_t host;
 	int port;
-	pj_time_val expires;
+	pj_int32_t expires;
+	int valid;
 };
 extern pj_status_t register_module();
 //路由模块

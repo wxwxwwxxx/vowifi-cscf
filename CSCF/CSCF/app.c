@@ -11,13 +11,45 @@ int worker_proc(void *arg)
 	}
 	return 0;
 }
+int clean_proc(void *arg)
+{
+	PJ_UNUSED_ARG(arg);
+	int i = 0;
+	pj_hash_iterator_t it;
+	pj_hash_iterator_t* itptr;
+	while (!app.quit)
+	{
+		pj_thread_sleep(10000);
+		i++;
+		if (i == 30)
+		{
+			pj_lock_acquire(app.routing_lock);
+			for (itptr = pj_hash_first(app.routing_chart, &it); itptr != NULL; itptr = pj_hash_next(app.routing_chart, itptr))
+			{
+				struct IPC_userinfo* ui = pj_hash_this(app.routing_chart, itptr);
+				if (ui->valid)
+				{
+					ui->expires -= 300;
+					if (ui->expires < -300)
+					{
+						ui->valid = 0;
+						PJ_LOG(3,(THIS_FILE,"Clean:%s",pj_strdup4(app.pool,&ui->user)));
+					}
+				}
+			}
+			pj_lock_release(app.routing_lock);
+			i = 0;
+		}
+	}
+	return 0;
+}
 pj_status_t init_stack()
 {
 	pj_init();
 	init_config();
 	pj_sockaddr addr;
 	pj_status_t status;
-	pj_log_set_level(6);
+	pj_log_set_level(3);
 	
 	status = pjlib_util_init();
 	CHECK_STATUS();
@@ -25,7 +57,6 @@ pj_status_t init_stack()
 	app.pool = pj_pool_create(&app.cp.factory, "CSCF", 512, 512, 0);
 	status = pjsip_endpt_create(&app.cp.factory, NULL, &app.sip_endpt);
 	CHECK_STATUS();
-	pj_log_set_level(6);
 	pj_sockaddr_init((pj_uint16_t)network_config.sip_af, &addr, NULL, (pj_uint16_t)network_config.sip_port);
 	if (network_config.sip_af == pj_AF_INET())
 	{
@@ -53,6 +84,9 @@ pj_status_t init_stack()
 	pj_thread_create(app.pool, "CSCF", &worker_proc, NULL, 0, 0,&app.worker_thread);
 	CHECK_STATUS();
 	app.routing_chart = pj_hash_create(app.pool, 20);
+	pj_lock_create_recursive_mutex(app.pool, "lock", &app.routing_lock);
+	pj_thread_create(app.pool, "Clean", &clean_proc, NULL, 0, 0, &app.clean_thread);
+	CHECK_STATUS();
 	return PJ_SUCCESS;
 }
 void destroy_stack(void)

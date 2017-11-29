@@ -17,13 +17,23 @@ char* pj_strdup4(pj_pool_t* pool,const pj_str_t * pjstr)
 pj_status_t set_chart(struct IPC_userinfo *ui)
 {
 	char* key = pj_strdup4(app.pool, &ui->user);
+	pj_lock_acquire(app.routing_lock);
 	pj_hash_set(app.pool, app.routing_chart, key, PJ_HASH_KEY_STRING, 0, ui);
+	pj_lock_release(app.routing_lock);
 	return PJ_SUCCESS;
 }
 //key ÊÇC·ç¸ñ×Ö·û´®
 struct IPC_userinfo * get_chart(const char* key)
 {
-	return (struct IPC_userinfo *)pj_hash_get(app.routing_chart, key, PJ_HASH_KEY_STRING, 0);
+	pj_lock_acquire(app.routing_lock);
+	struct IPC_userinfo *ui= pj_hash_get(app.routing_chart, key, PJ_HASH_KEY_STRING, 0);
+	if (ui!=NULL&&ui->valid == 0)
+	{
+		pj_hash_set(app.pool, app.routing_chart, key, PJ_HASH_KEY_STRING, 0, NULL);
+		ui = NULL;
+	}
+	pj_lock_release(app.routing_lock);
+	return  ui;
 }
 pj_bool_t route_on_rx_msg(pjsip_rx_data *rdata)
 {
