@@ -47,8 +47,6 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 				continue;
 
 			hdst = (pjsip_contact_hdr*)pjsip_hdr_clone(rdata->tp_info.pool, hsrc);
-			if (hdst->expires == 0)
-				continue;
 			//save it to routing_chart
 			pjsip_sip_uri *contact = (pjsip_sip_uri*)pjsip_uri_get_uri(hdst->uri);
 			struct IPC_userinfo *userinfo = pj_pool_alloc(app.pool, sizeof(struct IPC_userinfo));
@@ -56,7 +54,16 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 			pj_strdup2(app.pool, &userinfo->host, rdata->pkt_info.src_name);
 			userinfo->port = rdata->pkt_info.src_port;
 			pjsip_hdr *h = pjsip_msg_find_hdr(rdata->msg_info.msg, PJSIP_H_EXPIRES, NULL);
-			userinfo->expires = ((pjsip_expires_hdr*)h)->ivalue;
+			//////Need Check
+			//优先采用Expire字段
+			if (h == NULL)
+			{
+				userinfo->expires = hdst->expires;
+			}
+			else
+			{
+				userinfo->expires = ((pjsip_expires_hdr*)h)->ivalue;
+			}
 			if (userinfo->expires == 0)
 			{
 				userinfo->valid = 0;
