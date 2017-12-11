@@ -1,6 +1,24 @@
 #include "module.h"
 #include "cscf.h"
 #include "pj.h"
+/*send.c*/
+#include <stdio.h>   
+#include <sys/types.h>   
+#include <sys/ipc.h>   
+#include <sys/msg.h>   
+#include <errno.h>   
+#include <stdlib.h>
+#include<string.h>
+#include<unistd.h>
+
+struct msg_cscf
+{
+	long msgtype;
+	char msgtext[100];
+	int port;
+	int expire;
+
+} m_cscf;
 //utf8
 char* pj_strdup4(pj_pool_t* pool,const pj_str_t * pjstr)
 {
@@ -14,26 +32,41 @@ char* pj_strdup4(pj_pool_t* pool,const pj_str_t * pjstr)
 	key[len] = '\0';
 	return key;
 }
-pj_status_t set_chart(struct IPC_userinfo *ui)
+pj_status_t set_chart()
 {
-	char* key = pj_strdup4(app.pool, &ui->user);
-	pj_lock_acquire(app.routing_lock);
-	pj_hash_set(app.pool, app.routing_chart, key, PJ_HASH_KEY_STRING, 0, ui);
-	pj_lock_release(app.routing_lock);
+
+	m_cscf.msgtype = 1;
+	m_cscf.port = ui.port;
+	for (int i = 0; i < ui.user.slen; i++)
+	{
+		m_cscf.msgtext[i] = ui.user.ptr[i];
+	}
+	m_cscf.msgtext[ui.user.slen] = ';';
+	for (int i = 0; i < ui.host.slen; i++)
+	{
+		m_cscf.msgtext[i+1+ ui.user.slen] = ui.host.ptr[i];
+	}
+	m_cscf.msgtext[ui.user.slen+ui.host.slen+1] = '\0';
+	m_cscf.expire = ui.expires;
+	msgsnd(app.send_id, &m_cscf, sizeof(struct msg_cscf), 0);
+	PJ_LOG(3, (THIS_FILE, "%s", m_cscf.msgtext));
 	return PJ_SUCCESS;
 }
 //key ÊÇC·ç¸ñ×Ö·û´®
-struct IPC_userinfo * get_chart(const char* key)
+pj_status_t  get_chart(const char* key)
 {
-	pj_lock_acquire(app.routing_lock);
-	struct IPC_userinfo *ui= pj_hash_get(app.routing_chart, key, PJ_HASH_KEY_STRING, 0);
-	if (ui!=NULL&&ui->valid == 0)
-	{
-		pj_hash_set(app.pool, app.routing_chart, key, PJ_HASH_KEY_STRING, 0, NULL);
-		ui = NULL;
-	}
-	pj_lock_release(app.routing_lock);
-	return  ui;
+	m_cscf.expire = 0;
+	m_cscf.msgtype = 2;
+	m_cscf.port = 0;
+	strcpy(m_cscf.msgtext,key);
+	msgsnd(app.send_id, &m_cscf, sizeof(struct msg_cscf), 0);
+	msgrcv(app.recv_id, &m_cscf, sizeof(struct msg_cscf), 0, 0);
+	if (m_cscf.expire == -1)return PJ_TRUE;
+	ui.user = pj_str(key);
+	ui.host = pj_str(m_cscf.msgtext);
+	ui.port = m_cscf.port;
+	ui.expires = 0;
+	return PJ_SUCCESS;
 }
 pj_bool_t route_on_rx_msg(pjsip_rx_data *rdata)
 {
@@ -49,16 +82,16 @@ pj_bool_t route_on_rx_msg(pjsip_rx_data *rdata)
 	pj_status_t status;
 	pjsip_sip_uri * req_uri=pjsip_uri_get_uri(rdata->msg_info.msg->line.req.uri);
 	char* key=pj_strdup4(app.pool, &req_uri->user);
-	struct IPC_userinfo* userinfo = get_chart(key);
-	if (userinfo == NULL)
+	status=get_chart(key);
+	if (status != PJ_SUCCESS)
 	{
 		status = pjsip_endpt_respond(app.sip_endpt, NULL, rdata, 404, NULL,NULL, NULL, NULL);
 		return PJ_TRUE;
 	}
 	else
 	{
-		pj_strcpy(&req_uri->host, &userinfo->host);
-		req_uri->port = userinfo->port;
+		pj_strcpy(&req_uri->host, &ui.host);
+		req_uri->port =ui.port;
 	}
 	return PJ_FALSE;
 }

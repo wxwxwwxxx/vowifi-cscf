@@ -1,5 +1,8 @@
 #include"cscf.h"
 #include "pj.h"
+#include <sys/types.h>   
+#include <sys/ipc.h>   
+#include <sys/msg.h>   
 //utf8
 int worker_proc(void *arg)
 {
@@ -33,7 +36,7 @@ int clean_proc(void *arg)
 					if (ui->expires < -300)
 					{
 						ui->valid = 0;
-						PJ_LOG(3,(THIS_FILE,"Clean:%s",pj_strdup4(app.pool,&ui->user)));
+						PJ_LOG(3,(THIS_FILE,"CLEAN:%s",pj_strdup4(app.pool,&ui->user)));
 					}
 				}
 			}
@@ -50,7 +53,8 @@ pj_status_t init_stack()
 	pj_sockaddr addr;
 	pj_status_t status;
 	pj_log_set_level(3);
-	
+	app.send_id = msgget(CSCF_SEND, IPC_CREAT);
+	app.recv_id = msgget(CSCF_RECV, IPC_CREAT);
 	status = pjlib_util_init();
 	CHECK_STATUS();
 	pj_caching_pool_init(&app.cp, NULL, 0);
@@ -83,9 +87,9 @@ pj_status_t init_stack()
 	CHECK_STATUS();
 	pj_thread_create(app.pool, "CSCF", &worker_proc, NULL, 0, 0,&app.worker_thread);
 	CHECK_STATUS();
-	app.routing_chart = pj_hash_create(app.pool, 20);
-	pj_lock_create_recursive_mutex(app.pool, "lock", &app.routing_lock);
-	pj_thread_create(app.pool, "Clean", &clean_proc, NULL, 0, 0, &app.clean_thread);
+//	app.routing_chart = pj_hash_create(app.pool, 20);
+//	pj_lock_create_recursive_mutex(app.pool, "lock", &app.routing_lock);
+//	pj_thread_create(app.pool, "Clean", &clean_proc, NULL, 0, 0, &app.clean_thread);
 	CHECK_STATUS();
 	return PJ_SUCCESS;
 }

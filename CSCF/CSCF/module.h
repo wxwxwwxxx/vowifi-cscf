@@ -41,10 +41,10 @@ struct IPC_userinfo {
 	int port;
 	pj_int32_t expires;
 	int valid;
-};
+} ui;
 extern pj_status_t register_module();
 //路由模块
 extern pjsip_module module_route;
-extern pj_status_t set_chart(struct IPC_userinfo *ui);
-extern struct IPC_userinfo * get_chart(const char* key);
+extern pj_status_t set_chart();
+extern pj_status_t get_chart(const char* key);
 extern char* pj_strdup4(pj_pool_t* pool, const pj_str_t * pjstr);

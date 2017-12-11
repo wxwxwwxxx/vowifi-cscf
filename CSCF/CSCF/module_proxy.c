@@ -279,7 +279,10 @@ pj_bool_t proxy_on_rx_request(pjsip_rx_data *rdata)
 				NULL, NULL, NULL);
 			return PJ_TRUE;
 		}
-
+#ifdef PJ_SERVER_TEST 
+		tdata->via_addr.host = pj_str(PJ_SERVER_ADDRESS);
+		tdata->via_addr.port = PJ_SERVER_PORT;
+#endif // PJ_SERVER_TEST 
 
 		/* Process routing */
 		status = proxy_process_routing(tdata);
@@ -287,6 +290,8 @@ pj_bool_t proxy_on_rx_request(pjsip_rx_data *rdata)
 			app_perror("Error processing route", status);
 			return PJ_TRUE;
 		}
+
+
 
 		/* Calculate target */
 		status = proxy_calculate_target(rdata, tdata);

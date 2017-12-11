@@ -49,31 +49,31 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 			hdst = (pjsip_contact_hdr*)pjsip_hdr_clone(rdata->tp_info.pool, hsrc);
 			//save it to routing_chart
 			pjsip_sip_uri *contact = (pjsip_sip_uri*)pjsip_uri_get_uri(hdst->uri);
-			struct IPC_userinfo *userinfo = pj_pool_alloc(app.pool, sizeof(struct IPC_userinfo));
-			pj_strdup(app.pool, &userinfo->user, &contact->user);
-			pj_strdup2(app.pool, &userinfo->host, rdata->pkt_info.src_name);
-			userinfo->port = rdata->pkt_info.src_port;
+
+			pj_strdup(app.pool, &ui.user, &contact->user);
+			pj_strdup2(app.pool, &ui.host, rdata->pkt_info.src_name);
+			ui.port = rdata->pkt_info.src_port;
 			pjsip_hdr *h = pjsip_msg_find_hdr(rdata->msg_info.msg, PJSIP_H_EXPIRES, NULL);
 			//////Need Check
 			//优先采用Expire字段
 			if (h == NULL)
 			{
-				userinfo->expires = hdst->expires;
+				ui.expires = hdst->expires;
 			}
 			else
 			{
-				userinfo->expires = ((pjsip_expires_hdr*)h)->ivalue;
+				ui.expires = ((pjsip_expires_hdr*)h)->ivalue;
 			}
-			if (userinfo->expires == 0)
+			if (ui.expires == 0)
 			{
-				userinfo->valid = 0;
+				ui.valid = 0;
 			}
 			else
 			{
-				userinfo->valid = 1;
+				ui.valid = 1;
 			}
-			PJ_LOG(3, (THIS_FILE, " REGISTER SUCCESS：%s  %d", pj_strdup4(app.pool, &userinfo->user), userinfo->expires));
-			set_chart(userinfo);
+			PJ_LOG(3, (THIS_FILE, " REGISTER SUCCESS:%s  %d", pj_strdup4(app.pool, &ui.user), ui.expires));
+			status=set_chart();
 		}
 		code = registrar_config.status_code;
 	}
