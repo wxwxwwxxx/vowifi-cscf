@@ -14,38 +14,6 @@ int worker_proc(void *arg)
 	}
 	return 0;
 }
-int clean_proc(void *arg)
-{
-	PJ_UNUSED_ARG(arg);
-	int i = 0;
-	pj_hash_iterator_t it;
-	pj_hash_iterator_t* itptr;
-	while (!app.quit)
-	{
-		pj_thread_sleep(10000);
-		i++;
-		if (i == 30)
-		{
-			pj_lock_acquire(app.routing_lock);
-			for (itptr = pj_hash_first(app.routing_chart, &it); itptr != NULL; itptr = pj_hash_next(app.routing_chart, itptr))
-			{
-				struct IPC_userinfo* ui = pj_hash_this(app.routing_chart, itptr);
-				if (ui->valid)
-				{
-					ui->expires -= 300;
-					if (ui->expires < -300)
-					{
-						ui->valid = 0;
-						PJ_LOG(3,(THIS_FILE,"CLEAN:%s",pj_strdup4(app.pool,&ui->user)));
-					}
-				}
-			}
-			pj_lock_release(app.routing_lock);
-			i = 0;
-		}
-	}
-	return 0;
-}
 pj_status_t init_stack()
 {
 	pj_init();
