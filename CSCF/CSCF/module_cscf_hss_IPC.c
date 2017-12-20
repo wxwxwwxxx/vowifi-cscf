@@ -34,7 +34,7 @@ char* pj_strdup4(pj_pool_t* pool,const pj_str_t * pjstr)
 }
 pj_status_t set_chart()
 {
-
+	int ret;
 	m_cscf.msgtype = 1;
 	m_cscf.port = ui.port;
 	for (int i = 0; i < ui.user.slen; i++)
@@ -47,20 +47,26 @@ pj_status_t set_chart()
 		m_cscf.msgtext[i+1+ ui.user.slen] = ui.host.ptr[i];
 	}
 	m_cscf.msgtext[ui.user.slen+ui.host.slen+1] = '\0';
+
 	m_cscf.expire = ui.expires;
-	msgsnd(app.send_id, &m_cscf, sizeof(struct msg_cscf), 0);
+	ret=msgsnd(app.send_id, &m_cscf, sizeof(struct msg_cscf), 0);
+	PJ_LOG(3, (THIS_FILE, "%d", ret));
+	assert(ret!=-1);
 	PJ_LOG(3, (THIS_FILE, "%s", m_cscf.msgtext));
 	return PJ_SUCCESS;
 }
 //key ÊÇC·ç¸ñ×Ö·û´®
 pj_status_t  get_chart(const char* key)
 {
+	int ret;
 	m_cscf.expire = 0;
 	m_cscf.msgtype = 2;
 	m_cscf.port = 0;
 	strcpy(m_cscf.msgtext,key);
-	msgsnd(app.send_id, &m_cscf, sizeof(struct msg_cscf), 0);
-	msgrcv(app.recv_id, &m_cscf, sizeof(struct msg_cscf), 0, 0);
+	ret=msgsnd(app.send_id, &m_cscf, sizeof(struct msg_cscf), 0);
+	assert(ret != -1);
+	ret=msgrcv(app.recv_id, &m_cscf, sizeof(struct msg_cscf), 0, 0);
+	assert(ret != -1);
 	if (m_cscf.expire == -1)return PJ_TRUE;
 	ui.user = pj_str(key);
 	ui.host = pj_str(m_cscf.msgtext);
@@ -70,28 +76,24 @@ pj_status_t  get_chart(const char* key)
 }
 pj_bool_t route_on_rx_msg(pjsip_rx_data *rdata)
 {
-	pjsip_method_e methodid= rdata->msg_info.msg->line.req.method.id;
-	if (methodid == PJSIP_INVITE_METHOD || methodid == PJSIP_ACK_METHOD || methodid == PJSIP_BYE_METHOD || methodid == PJSIP_CANCEL_METHOD||pj_strcmp2(&rdata->msg_info.msg->line.req.method.name,"MESSAGE")==0)
-	{
-
-	}
-	else
+	pjsip_msg_type_e msgtype= rdata->msg_info.msg->type;
+	if (msgtype==PJSIP_RESPONSE_MSG)
 	{
 		return PJ_FALSE;
 	}
 	pj_status_t status;
-	pjsip_sip_uri * req_uri=pjsip_uri_get_uri(rdata->msg_info.msg->line.req.uri);
-	char* key=pj_strdup4(app.pool, &req_uri->user);
-	status=get_chart(key);
+	pjsip_sip_uri * req_uri = pjsip_uri_get_uri(rdata->msg_info.msg->line.req.uri);
+	char* key = pj_strdup4(app.pool, &req_uri->user);
+	status = get_chart(key);
 	if (status != PJ_SUCCESS)
 	{
-		status = pjsip_endpt_respond(app.sip_endpt, NULL, rdata, 404, NULL,NULL, NULL, NULL);
+		status = pjsip_endpt_respond(app.sip_endpt, NULL, rdata, 404, NULL, NULL, NULL, NULL);
 		return PJ_TRUE;
 	}
 	else
 	{
 		pj_strcpy(&req_uri->host, &ui.host);
-		req_uri->port =ui.port;
+		req_uri->port = ui.port;
 	}
 	return PJ_FALSE;
 }
