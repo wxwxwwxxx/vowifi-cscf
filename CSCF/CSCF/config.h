@@ -1,12 +1,12 @@
 #pragma once
 #include "pj.h"
 //保存app相关设置
-struct network_config_t
+typedef struct 
 {
 	int				sip_af;
 	int				sip_port;
 	pj_bool_t		sip_tcp;
-} network_config;
+} network_config_t;
 
 //enum contact_op
 //{
@@ -14,7 +14,7 @@ struct network_config_t
 //	EXACT,	/* return exact contact		    */
 //	MODIFIED,	/* return modified Contact header   */
 //};
-struct registrar_cfg
+typedef struct
 {
 	pj_bool_t	    respond;	    /* should it respond at all		*/
 	unsigned	    status_code;    /* final response status code	*/
@@ -23,5 +23,7 @@ struct registrar_cfg
 	//unsigned	    expires_param;  /* non-zero to put in expires param	*/
 	//unsigned	    expires;	    /* non-zero to put in Expires header*/
 	pj_str_t	    more_contacts;  /* Additional Contact headers to put*/
-}registrar_config;
+} registrar_cfg;
+extern network_config_t network_config;
+extern registrar_cfg registrar_config;
 extern pj_status_t init_config();

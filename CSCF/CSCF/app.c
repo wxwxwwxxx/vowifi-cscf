@@ -4,6 +4,7 @@
 #include <sys/ipc.h>   
 #include <sys/msg.h>   
 //utf8
+app_t app;
 int worker_proc(void *arg)
 {
 	PJ_UNUSED_ARG(arg);

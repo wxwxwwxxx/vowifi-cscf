@@ -1,7 +1,7 @@
 #pragma once
 #include"pj.h"
 //保存基本的pjsip模块，包括缓存池，endpoint，线程池等
-struct app_t
+typedef struct
 {
 	pj_caching_pool	 cp;
 	pj_pool_t		*pool;
@@ -19,8 +19,8 @@ struct app_t
 	pj_lock_t* routing_lock;
 	int send_id;
 	int recv_id
-} app;
-
+} app_t;
+extern app_t app;
 extern int worker_proc(void *arg);
 extern pj_status_t init_stack();
 extern void destroy_stack(void);

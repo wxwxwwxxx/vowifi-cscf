@@ -3,6 +3,7 @@
 #include "pj.h"
 
 /*与HSS通信所需数据结构*/
+IPC_userinfo ui;
 
 pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 {

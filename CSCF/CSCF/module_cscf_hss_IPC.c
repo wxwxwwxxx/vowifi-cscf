@@ -50,9 +50,7 @@ pj_status_t set_chart()
 
 	m_cscf.expire = ui.expires;
 	ret=msgsnd(app.send_id, &m_cscf, sizeof(struct msg_cscf), 0);
-	PJ_LOG(3, (THIS_FILE, "%d", ret));
 	assert(ret!=-1);
-	PJ_LOG(3, (THIS_FILE, "%s", m_cscf.msgtext));
 	return PJ_SUCCESS;
 }
 //key ÊÇC·ç¸ñ×Ö·û´®

@@ -1,5 +1,7 @@
 #include "pj.h"
 #include "cscf.h"
+network_config_t network_config;
+registrar_cfg registrar_config;
 pj_status_t init_config()
 {
 	network_config.sip_af = pj_AF_INET();

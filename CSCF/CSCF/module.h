@@ -35,13 +35,14 @@ extern void tu_on_tsx_state(pjsip_transaction * tsx, pjsip_event * event);
 extern pjsip_module module_proxy;
 extern pjsip_module mod_tu;
 //模块注册函数
-struct IPC_userinfo {
+typedef struct  {
 	pj_str_t user;
 	pj_str_t host;
 	int port;
 	pj_int32_t expires;
 	int valid;
-} ui;
+}IPC_userinfo;
+extern IPC_userinfo ui;
 extern pj_status_t register_module();
 //路由模块
 extern pjsip_module module_route;
