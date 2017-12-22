@@ -18,7 +18,7 @@ struct app_t
 	pj_hash_table_t * routing_chart;
 	pj_lock_t* routing_lock;
 	int send_id;
-	int recv_id
+	int recv_id;
 } app;
 
 extern int worker_proc(void *arg);
