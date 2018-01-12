@@ -74,11 +74,12 @@ pj_status_t  get_chart(const char* key)
 }
 pj_bool_t route_on_rx_msg(pjsip_rx_data *rdata)
 {
+//	PJ_LOG(3, ("IPC", "%s", pj_strdup4(app.pool, &rdata->msg_info.msg->line.req.method.name)));
 	pjsip_msg_type_e msgtype= rdata->msg_info.msg->type;
-	if (msgtype==PJSIP_RESPONSE_MSG)
-	{
-		return PJ_FALSE;
-	}
+//	if (msgtype==PJSIP_RESPONSE_MSG)
+//	{
+//		return PJ_FALSE;
+//	}
 	pj_status_t status;
 	pjsip_sip_uri * req_uri = pjsip_uri_get_uri(rdata->msg_info.msg->line.req.uri);
 	char* key = pj_strdup4(app.pool, &req_uri->user);
@@ -101,13 +102,13 @@ pjsip_module module_route =
 	NULL, NULL,				/* prev, next.		*/
 	{ "module_route", 12 },		/* Name.		*/
 	-1,					/* Id			*/
-	PJSIP_MOD_PRIORITY_UA_PROXY_LAYER - 1,/* Priority	        */
+	PJSIP_MOD_PRIORITY_UA_PROXY_LAYER- 2,/* Priority	        */
 	NULL,				/* load()		*/
 	NULL,				/* start()		*/
 	NULL,				/* stop()		*/
 	NULL,				/* unload()		*/
 	&route_on_rx_msg,			/* on_rx_request()	*/
-	&route_on_rx_msg,			/* on_rx_response()	*/
+	NULL,//&route_on_rx_msg,			/* on_rx_response()	*/
 	NULL,
 	NULL,
 	NULL,				/* on_tsx_state()	*/

@@ -7,11 +7,11 @@ IPC_userinfo ui;
 
 pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 {
+//	PJ_LOG(3, ("REG", "%s", pj_strdup4(app.pool, &rdata->msg_info.msg->line.req.method.name)));
 	pjsip_msg *msg = rdata->msg_info.msg;
 	pjsip_hdr hdr_list;
 	int code;
 	pj_status_t status;
-	
 	if (pj_strcmp2(&msg->line.req.method.name,"SUBSCRIBE")==0)
 	{
 		/*如果是subscribe方法，暂时回应200*/
@@ -88,7 +88,7 @@ pjsip_module module_registrar =
 	NULL, NULL,			    /* prev, next.		*/
 	{ "module_registrar", 16 },	    /* Name.			*/
 	-1,				    /* Id			*/
-	PJSIP_MOD_PRIORITY_UA_PROXY_LAYER-2, /* Priority			*/
+	PJSIP_MOD_PRIORITY_UA_PROXY_LAYER-3, /* Priority			*/
 	NULL,			    /* load()			*/
 	NULL,			    /* start()			*/
 	NULL,			    /* stop()			*/

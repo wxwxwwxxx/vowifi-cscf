@@ -77,6 +77,7 @@
     <ClCompile Include="..\CSCF\module_log.c" />
     <ClCompile Include="..\CSCF\module_proxy.c" />
     <ClCompile Include="..\CSCF\module_registrar.c" />
+    <ClCompile Include="..\CSCF\module_rtpproxy.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CSCF\app.h" />
@@ -101,7 +102,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>/home/debug/projects/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <LibraryDependencies>pjmedia-audiodev-x86_64-unknown-linux-gnu;pjmedia-codec-x86_64-unknown-linux-gnu;pjmedia-videodev-x86_64-unknown-linux-gnu;pjmedia-x86_64-unknown-linux-gnu;pjnath-x86_64-unknown-linux-gnu;pjsdp-x86_64-unknown-linux-gnu;pjsip-simple-x86_64-unknown-linux-gnu;pjsip-ua-x86_64-unknown-linux-gnu;pjsip-x86_64-unknown-linux-gnu;pjsua2-x86_64-unknown-linux-gnu;pjsua-x86_64-unknown-linux-gnu;pj-x86_64-unknown-linux-gnu;pjlib-util-x86_64-unknown-linux-gnu</LibraryDependencies>
+      <LibraryDependencies>pjmedia-audiodev-x86_64-unknown-linux-gnu;pjmedia-codec-x86_64-unknown-linux-gnu;pjmedia-videodev-x86_64-unknown-linux-gnu;pjnath-x86_64-unknown-linux-gnu;pjsdp-x86_64-unknown-linux-gnu;pjsip-simple-x86_64-unknown-linux-gnu;pjsip-ua-x86_64-unknown-linux-gnu;pjsip-x86_64-unknown-linux-gnu;pjsua2-x86_64-unknown-linux-gnu;pjsua-x86_64-unknown-linux-gnu;pj-x86_64-unknown-linux-gnu;pjlib-util-x86_64-unknown-linux-gnu;pjmedia-x86_64-unknown-linux-gnu</LibraryDependencies>
       <AdditionalOptions>-lpthread %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>

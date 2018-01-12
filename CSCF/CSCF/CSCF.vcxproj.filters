@@ -39,6 +39,9 @@
     <ClCompile Include="module_cscf_hss_IPC.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="module_rtpproxy.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h">
