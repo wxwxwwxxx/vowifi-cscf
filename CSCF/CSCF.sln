@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CSCF", "CSCF\CSCF.vcxproj", "{5F960A3F-83D0-4BCE-88D4-0914E23A9581}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CSCF-linux", "CSCF-linux\CSCF-linux.vcxproj", "{81CC91B7-072F-46C3-988D-52715DF326CF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UDPTest", "UDPTest\UDPTest.vcxproj", "{8AAF8355-63C2-49C6-A788-76733FE85F06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,18 @@ Global
 		{81CC91B7-072F-46C3-988D-52715DF326CF}.Release|x64.Build.0 = Release|x64
 		{81CC91B7-072F-46C3-988D-52715DF326CF}.Release|x86.ActiveCfg = Release|x86
 		{81CC91B7-072F-46C3-988D-52715DF326CF}.Release|x86.Build.0 = Release|x86
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Debug|ARM.ActiveCfg = Debug|ARM
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Debug|ARM.Build.0 = Debug|ARM
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Debug|x64.ActiveCfg = Debug|x64
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Debug|x64.Build.0 = Debug|x64
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Debug|x86.ActiveCfg = Debug|x86
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Debug|x86.Build.0 = Debug|x86
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Release|ARM.ActiveCfg = Release|ARM
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Release|ARM.Build.0 = Release|ARM
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Release|x64.ActiveCfg = Release|x64
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Release|x64.Build.0 = Release|x64
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Release|x86.ActiveCfg = Release|x86
+		{8AAF8355-63C2-49C6-A788-76733FE85F06}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

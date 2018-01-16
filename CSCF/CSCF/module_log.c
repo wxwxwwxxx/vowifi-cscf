@@ -4,7 +4,7 @@
 //utf8
 pj_bool_t logging_on_rx_msg(pjsip_rx_data *rdata)
 {
-	PJ_LOG(3, ("LOG", "%s", pj_strdup4(app.pool, &rdata->msg_info.msg->line.req.method.name)));
+	
 	if (!app.enable_msg_logging)
 		return PJ_FALSE;
 

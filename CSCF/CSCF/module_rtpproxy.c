@@ -8,10 +8,16 @@ pj_bool_t change_sdp(pjsip_rx_data *rdata)
 	pjmedia_sdp_session *sdp;
 	pj_status_t status;
 	pjsip_msg_type_e msgtype = rdata->msg_info.msg->type;
-
+	if (rdata->msg_info.msg->line.req.method.id==PJSIP_BYE_METHOD)
+	{
+		PJ_LOG(3, ("BYE", "%s", pj_strdup4(app.pool, &rdata->msg_info.cid->id)));
+		PJ_LOG(3, ("BYE", "%s", pj_strdup4(app.pool, &rdata->msg_info.cid->name)));
+		return PJ_FALSE;
+	}
 	if(rdata->msg_info.msg->body==NULL)
 		return PJ_FALSE;
-
+	PJ_LOG(3, ("LOG", "%s", pj_strdup4(app.pool, &rdata->msg_info.cid->id)));
+	PJ_LOG(3, ("LOG", "%s", pj_strdup4(app.pool, &rdata->msg_info.cid->name)));
 	unsigned int len= rdata->msg_info.msg->body->len;
 	void* sdp_buf = pj_pool_alloc(app.pool, len + 50);
 	status = pjmedia_sdp_parse(app.pool, (char*)rdata->msg_info.msg->body->data, len, (&sdp));
