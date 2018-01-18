@@ -7,7 +7,7 @@
 #define CSCF_RECV 1024 
 #define RTP_SEND 1983
 #define RTP_RECV 1984
-#define CSCF_RECV 1024 
+
 #ifdef PJ_SERVER_TEST
 	#define PJ_SERVER_ADDRESS "59.110.217.175"
 	#define PJ_SERVER_PORT 9170;

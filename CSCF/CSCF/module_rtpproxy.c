@@ -17,7 +17,6 @@ pj_bool_t change_sdp(pjsip_rx_data *rdata)
 	pjmedia_sdp_session *sdp;
 	pj_status_t status;
 	pjsip_msg_type_e msgtype = rdata->msg_info.msg->type;
-	int ret;
 	if (rdata->msg_info.msg->line.req.method.id==PJSIP_BYE_METHOD
 		|| rdata->msg_info.msg->line.req.method.id==PJSIP_CANCEL_METHOD
 		||pj_strcmp2( &rdata->msg_info.msg->line.req.method.name,"Decline")==0)
