@@ -18,7 +18,9 @@ typedef struct
 	pj_hash_table_t * routing_chart;
 	pj_lock_t* routing_lock;
 	int send_id;
-	int recv_id
+	int recv_id;
+	int rtp_send_id;
+	int rtp_recv_id;
 } app_t;
 extern app_t app;
 extern int worker_proc(void *arg);

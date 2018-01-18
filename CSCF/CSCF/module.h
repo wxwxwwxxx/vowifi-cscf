@@ -51,3 +51,15 @@ extern pj_status_t get_chart(const char* key);
 extern char* pj_strdup4(pj_pool_t* pool, const pj_str_t * pjstr);
 //RTP转发模块
 extern pjsip_module module_rtpproxy;
+extern void set_m_rtpproxy(long mtype, pj_str_t* str);
+extern pj_uint16_t get_port(long mtype, pj_str_t* str);
+typedef struct 
+{
+	//1:申请端口0
+	//2:申请端口1
+	//3:释放端口
+	long msgtype;
+	char msgtext[100];
+	pj_uint16_t port;
+}msg_rtpproxy;//
+extern msg_rtpproxy m_rtpproxy;

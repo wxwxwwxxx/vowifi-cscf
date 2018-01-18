@@ -87,6 +87,8 @@ pj_bool_t route_on_rx_msg(pjsip_rx_data *rdata)
 	if (status != PJ_SUCCESS)
 	{
 		status = pjsip_endpt_respond(app.sip_endpt, NULL, rdata, 404, NULL, NULL, NULL, NULL);
+		PJ_LOG(3, ("BYE", "%s", pj_strdup4(app.pool, &rdata->msg_info.cid->id)));
+		get_port(3, &rdata->msg_info.cid->id);
 		return PJ_TRUE;
 	}
 	else
@@ -102,7 +104,7 @@ pjsip_module module_route =
 	NULL, NULL,				/* prev, next.		*/
 	{ "module_route", 12 },		/* Name.		*/
 	-1,					/* Id			*/
-	PJSIP_MOD_PRIORITY_UA_PROXY_LAYER- 2,/* Priority	        */
+	PJSIP_MOD_PRIORITY_UA_PROXY_LAYER-2,/* Priority	        */
 	NULL,				/* load()		*/
 	NULL,				/* start()		*/
 	NULL,				/* stop()		*/

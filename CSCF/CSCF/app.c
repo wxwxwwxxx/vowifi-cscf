@@ -24,6 +24,8 @@ pj_status_t init_stack()
 	pj_log_set_level(3);
 	app.send_id = msgget(CSCF_SEND, IPC_CREAT);
 	app.recv_id = msgget(CSCF_RECV, IPC_CREAT);
+	app.rtp_send_id = msgget(RTP_SEND, IPC_CREAT);
+	app.rtp_recv_id = msgget(RTP_RECV, IPC_CREAT);
 	status = pjlib_util_init();
 	CHECK_STATUS();
 	pj_caching_pool_init(&app.cp, NULL, 0);

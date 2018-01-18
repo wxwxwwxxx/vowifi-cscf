@@ -42,7 +42,7 @@ pjsip_module module_log =
 	NULL, NULL,				/* prev, next.		*/
 	{ "module_log", 10 },		/* Name.		*/
 	-1,					/* Id			*/
-	PJSIP_MOD_PRIORITY_TRANSPORT_LAYER - 1,/* Priority	        */
+	PJSIP_MOD_PRIORITY_TRANSPORT_LAYER - 2,/* Priority	        */
 	NULL,				/* load()		*/
 	NULL,				/* start()		*/
 	NULL,				/* stop()		*/

@@ -430,6 +430,10 @@ pj_bool_t proxy_on_rx_request(pjsip_rx_data *rdata)
 
 			pjsip_endpt_create_cancel(app.sip_endpt, uas_data2->uac_tsx->last_tx,
 				&cancel);
+#ifdef PJ_SERVER_TEST 
+			cancel->via_addr.host = pj_str(PJ_SERVER_ADDRESS);
+			cancel->via_addr.port = PJ_SERVER_PORT;
+#endif // PJ_SERVER_TEST 
 			pjsip_endpt_send_request(app.sip_endpt, cancel, -1, NULL, NULL);
 
 			pj_grp_lock_release(uas_data2->uac_tsx->grp_lock);
