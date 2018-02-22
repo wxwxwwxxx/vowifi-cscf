@@ -15,6 +15,7 @@ namespace udpproxy
 	using namespace std;
 	extern void set_blocking(int sockfd);
 	extern void set_nonblocking(int sockfd);
+	//用于控制转发进程的结构体
 	struct proxy_control
 	{
 		unique_ptr<sockaddr_in> client_addr[2];
@@ -63,6 +64,7 @@ namespace udpproxy
 		}
 
 	};
+	//self代表本进程，oppo代表对方的转发进程
 	template <unsigned self, unsigned oppo = 1 - self>
 	void rtp_proxy(shared_ptr<proxy_control> pcon)
 	{
@@ -70,6 +72,7 @@ namespace udpproxy
 		int n=-1;
 		socklen_t len = sizeof(sockaddr_in);
 		set_nonblocking(pcon->sock[self]);
+		//先接受一个包，使对方转发进程获知转发目标地址
 		while (n == -1)
 		{
 			n = recvfrom(pcon->sock[self], buff, 511, 0, (sockaddr *)pcon->client_addr[self].get(), &len);
@@ -79,6 +82,7 @@ namespace udpproxy
 				return;
 			}
 		}
+		//不知道本进程转发目的地址时，丢弃收到的包
 		while (pcon->client_addr[oppo]->sin_addr.s_addr == 0)
 		{
 			n = recvfrom(pcon->sock[self], buff, 511, 0, (sockaddr *)pcon->client_addr[self].get(), &len);
@@ -90,6 +94,7 @@ namespace udpproxy
 		}
 		set_blocking(pcon->sock[self]);
 		printf("connect,%d %d\n", self, pcon->port[self]);
+		//正常转发
 		while (!pcon->shut)
 		{
 			n = recvfrom(pcon->sock[self], buff, 511, 0, (sockaddr *)pcon->client_addr[self].get(), &len);

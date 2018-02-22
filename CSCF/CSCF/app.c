@@ -5,6 +5,7 @@
 #include <sys/msg.h>   
 //utf8
 app_t app;
+//工作进程，用于检查sip消息到来的事件
 int worker_proc(void *arg)
 {
 	PJ_UNUSED_ARG(arg);
@@ -15,24 +16,30 @@ int worker_proc(void *arg)
 	}
 	return 0;
 }
+//初始化协议栈
 pj_status_t init_stack()
 {
+	//初始化pjsip
 	pj_init();
+	//初始化程序配置
 	init_config();
 	pj_sockaddr addr;
 	pj_status_t status;
 	pj_log_set_level(3);
+	//初始化消息队列
 	app.send_id = msgget(CSCF_SEND, IPC_CREAT);
 	app.recv_id = msgget(CSCF_RECV, IPC_CREAT);
 	app.rtp_send_id = msgget(RTP_SEND, IPC_CREAT);
 	app.rtp_recv_id = msgget(RTP_RECV, IPC_CREAT);
 	status = pjlib_util_init();
 	CHECK_STATUS();
+	//初始化内存池
 	pj_caching_pool_init(&app.cp, NULL, 0);
 	app.pool = pj_pool_create(&app.cp.factory, "CSCF", 512, 512, 0);
 	status = pjsip_endpt_create(&app.cp.factory, NULL, &app.sip_endpt);
 	CHECK_STATUS();
-	pj_sockaddr_init((pj_uint16_t)network_config.sip_af, &addr, NULL, (pj_uint16_t)network_config.sip_port);
+	//初始化网络
+	pj_sockaddr_init((pj_uint16_t)network_config.sip_af, &addr, NULL, (pj_uint16_t)app.port);
 	if (network_config.sip_af == pj_AF_INET())
 	{
 		if (network_config.sip_tcp)
@@ -52,14 +59,18 @@ pj_status_t init_stack()
 	{
 		status = PJ_EAFNOTSUP;
 	}
+	//初始化sip转发
 	status = init_proxy();
 	CHECK_STATUS();
+	//注册各个模块
 	status=register_module();
 	CHECK_STATUS();
+	//运行工作线程
 	pj_thread_create(app.pool, "CSCF", &worker_proc, NULL, 0, 0,&app.worker_thread);
 	CHECK_STATUS();
 	return PJ_SUCCESS;
 }
+//销毁协议栈
 void destroy_stack(void)
 {
 	enum { WAIT_CLEAR = 5000, WAIT_INTERVAL = 500 };
@@ -78,6 +89,7 @@ void destroy_stack(void)
 		pj_pool_release(app.pool);
 	pj_caching_pool_destroy(&app.cp);
 }
+//初始化sip转发模块
 pj_status_t init_proxy(void)
 {
 	pj_sockaddr pri_addr;

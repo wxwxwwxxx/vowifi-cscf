@@ -55,11 +55,13 @@ extern void set_m_rtpproxy(long mtype, pj_str_t* str);
 extern pj_uint16_t get_port(long mtype, pj_str_t* str);
 typedef struct 
 {
+	//msgtype定义：
 	//1:申请端口0
-	//2:申请端口1
+	//2:申请端口1（由于是转发，需要两个端口）
 	//3:释放端口
 	long msgtype;
 	char msgtext[100];
+	//用于返回端口
 	pj_uint16_t port;
 }msg_rtpproxy;//
 extern msg_rtpproxy m_rtpproxy;

@@ -1,11 +1,13 @@
 #pragma once
 #include "pj.h"
 //保存app相关设置
+
+//网络设置
 typedef struct 
 {
 	int				sip_af;
-	int				sip_port;
-	pj_bool_t		sip_tcp;
+	//int sip_port; （端口在宏定义中设置，此处不再需要端口设置）
+	pj_bool_t		sip_tcp;		//sip是否使用tcp连接
 } network_config_t;
 
 //enum contact_op

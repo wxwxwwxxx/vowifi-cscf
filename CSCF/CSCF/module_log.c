@@ -2,6 +2,7 @@
 #include "cscf.h"
 #include "pj.h"
 //utf8
+//log模块，直接打印收到的消息即可
 pj_bool_t logging_on_rx_msg(pjsip_rx_data *rdata)
 {
 	

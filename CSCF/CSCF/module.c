@@ -1,5 +1,6 @@
 #include "cscf.h"
 #include "pj.h"
+//模块注册函数
 //注：添加模块时请编辑该函数，增加模块的注册
 pj_status_t register_module()
 {

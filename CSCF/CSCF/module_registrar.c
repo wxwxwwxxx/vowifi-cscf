@@ -26,6 +26,8 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 
 	pj_list_init(&hdr_list);
 
+	//需要验证时返回401
+	//暂时没有验证用户，用户使用任何账号密码均可以登陆成功
 	if (registrar_config.authenticate &&
 		pjsip_msg_find_hdr(msg, PJSIP_H_AUTHORIZATION, NULL) == NULL)
 	{
@@ -48,7 +50,7 @@ pj_bool_t regs_rx_request(pjsip_rx_data *rdata)
 				continue;
 
 			hdst = (pjsip_contact_hdr*)pjsip_hdr_clone(rdata->tp_info.pool, hsrc);
-			//save it to routing_chart
+			//保存至路由表
 			pjsip_sip_uri *contact = (pjsip_sip_uri*)pjsip_uri_get_uri(hdst->uri);
 
 			pj_strdup(app.pool, &ui.user, &contact->user);

@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include<string.h>
 #include<unistd.h>
-
+//用于将注册信息发送至HSS
 struct msg_cscf
 {
 	long msgtype;
@@ -20,6 +20,7 @@ struct msg_cscf
 
 } m_cscf;
 //utf8
+//将pj_str的内容复制至char*
 char* pj_strdup4(pj_pool_t* pool,const pj_str_t * pjstr)
 {
 	char* key = (char*)pj_pool_alloc(pool, sizeof(char)*pj_strlen(pjstr) + 1);
@@ -32,6 +33,7 @@ char* pj_strdup4(pj_pool_t* pool,const pj_str_t * pjstr)
 	key[len] = '\0';
 	return key;
 }
+//设置路由表，将用户信息复制至消息队列并发送
 pj_status_t set_chart()
 {
 	int ret;
@@ -53,7 +55,7 @@ pj_status_t set_chart()
 	assert(ret!=-1);
 	return PJ_SUCCESS;
 }
-//key 是C风格字符串
+//访问路由表，获取用户信息并保存至ui结构体
 pj_status_t  get_chart(const char* key)
 {
 	int ret;
@@ -65,6 +67,7 @@ pj_status_t  get_chart(const char* key)
 	assert(ret != -1);
 	ret=msgrcv(app.recv_id, &m_cscf, sizeof(struct msg_cscf), 0, 0);
 	assert(ret != -1);
+	//当expire为-1时，代表查找失败，不存在该用户
 	if (m_cscf.expire == -1)return PJ_TRUE;
 	ui.user = pj_str(key);
 	ui.host = pj_str(m_cscf.msgtext);
@@ -72,20 +75,19 @@ pj_status_t  get_chart(const char* key)
 	ui.expires = 0;
 	return PJ_SUCCESS;
 }
+//模块的响应函数，用于将sip消息的目的地址替换为被叫者的真实地址
 pj_bool_t route_on_rx_msg(pjsip_rx_data *rdata)
 {
-//	PJ_LOG(3, ("IPC", "%s", pj_strdup4(app.pool, &rdata->msg_info.msg->line.req.method.name)));
+
 	pjsip_msg_type_e msgtype= rdata->msg_info.msg->type;
-//	if (msgtype==PJSIP_RESPONSE_MSG)
-//	{
-//		return PJ_FALSE;
-//	}
+
 	pj_status_t status;
 	pjsip_sip_uri * req_uri = pjsip_uri_get_uri(rdata->msg_info.msg->line.req.uri);
 	char* key = pj_strdup4(app.pool, &req_uri->user);
 	status = get_chart(key);
 	if (status != PJ_SUCCESS)
 	{
+		//路由表未查找到时，暂时返回404，接入能力云平台时可能需要修改这里
 		status = pjsip_endpt_respond(app.sip_endpt, NULL, rdata, 404, NULL, NULL, NULL, NULL);
 		PJ_LOG(3, ("BYE", "%s", pj_strdup4(app.pool, &rdata->msg_info.cid->id)));
 		get_port(3, &rdata->msg_info.cid->id);

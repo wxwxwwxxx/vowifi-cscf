@@ -10,13 +10,14 @@
 #include <stdlib.h>
 #include<string.h>
 #include<unistd.h>
+//rtp转发模块
 msg_rtpproxy m_rtpproxy;
 pj_bool_t change_sdp(pjsip_rx_data *rdata)
 {
-//	PJ_LOG(3, ("SDP", "%s", pj_strdup4(app.pool, &rdata->msg_info.msg->line.req.method.name)));
 	pjmedia_sdp_session *sdp;
 	pj_status_t status;
 	pjsip_msg_type_e msgtype = rdata->msg_info.msg->type;
+	//是挂断消息时，释放端口
 	if (rdata->msg_info.msg->line.req.method.id==PJSIP_BYE_METHOD
 		|| rdata->msg_info.msg->line.req.method.id==PJSIP_CANCEL_METHOD
 		||pj_strcmp2( &rdata->msg_info.msg->line.req.method.name,"Decline")==0)
@@ -34,7 +35,7 @@ pj_bool_t change_sdp(pjsip_rx_data *rdata)
 	void* sdp_buf = pj_pool_alloc(app.pool, len + 50);
 	status = pjmedia_sdp_parse(app.pool, (char*)rdata->msg_info.msg->body->data, len, (&sdp));
 	sdp->conn->addr = pj_str(PJ_SERVER_ADDRESS);
-	
+	//根据是响应还是请求来获得端口号，并修改SDP
 	if (msgtype == PJSIP_REQUEST_MSG)
 	{
 		pj_uint16_t port = get_port(1, &rdata->msg_info.cid->id);
@@ -61,6 +62,7 @@ pj_bool_t change_sdp(pjsip_rx_data *rdata)
 	rdata->msg_info.msg->body->len = len_buf;
 	return PJ_FALSE;
 }
+//根据cid设置消息队列
 void set_m_rtpproxy(long mtype,pj_str_t* str)
 {
 	m_rtpproxy.msgtype = mtype;
@@ -71,6 +73,7 @@ void set_m_rtpproxy(long mtype,pj_str_t* str)
 	m_rtpproxy.msgtext[str->slen] = '\0';
 	m_rtpproxy.port = 0;
 }
+//获得rtp转发端口号
 pj_uint16_t get_port(long mtype, pj_str_t* str)
 {
 	int ret;
@@ -88,7 +91,7 @@ pjsip_module module_rtpproxy =
 	NULL, NULL,				/* prev, next.		*/
 	{ "module_rtpproxy", 15 },		/* Name.		*/
 	-1,					/* Id			*/
-	PJSIP_MOD_PRIORITY_TRANSPORT_LAYER - 1,/* Priority	        */
+	PJSIP_MOD_PRIORITY_TRANSPORT_LAYER - 1,/* Priority	        *///优先级在传输层之前时会有bug
 	NULL,				/* load()		*/
 	NULL,				/* start()		*/
 	NULL,				/* stop()		*/
